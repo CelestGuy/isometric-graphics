@@ -42,20 +42,17 @@ public class MainController implements Initializable {
             for (int j = 0; j < mapLength; j++) {
                 for (int k = 0; k < mapHeight; k++) {
                     Cube cube = map.getCube(i, j, k);
+                    if (!cube.isTransparent()) {
+                        ImageView imageView = new ImageView(stone);
 
-                    ImageView imageView = new ImageView(air);
+                        imageView.setX((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
+                        imageView.setY((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
 
-                    if (cube.getID().equals("stone")) {
-                        imageView = new ImageView(stone);
+                        imageView.setFitWidth(cubeSize);
+                        imageView.setFitHeight(cubeSize);
+
+                        pane.getChildren().add(imageView);
                     }
-
-                    imageView.setX((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
-                    imageView.setY((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
-
-                    imageView.setFitWidth(cubeSize);
-                    imageView.setFitHeight(cubeSize);
-
-                    pane.getChildren().add(imageView);
                 }
             }
         }

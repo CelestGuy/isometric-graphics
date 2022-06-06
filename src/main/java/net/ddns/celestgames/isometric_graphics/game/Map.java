@@ -20,10 +20,6 @@ public class Map {
                 for (int k = 0; k < height; k++) {
                     String id = "stone";
 
-                    /*if (k == 0) {
-                        id = "stone";
-                    }*/
-
                     map[i][j][k] = new Cube(id);
                 }
             }
