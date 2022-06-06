@@ -19,6 +19,8 @@ public class Main extends Application {
         fxmlLoader.setController(controller);
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Welcome to the Isometric World !");
+        stage.setMaximized(true);
+        stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("cubes/x128/stone.png"))));
         stage.setScene(scene);
         stage.show();
 

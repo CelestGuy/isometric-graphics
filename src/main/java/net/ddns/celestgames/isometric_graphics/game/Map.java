@@ -5,8 +5,15 @@ import java.util.ArrayList;
 public class Map {
     private final Cube[][][] map;
 
+    private final int length;
+    private final int width;
+    private final int height;
+
     public Map(int width, int length, int height) {
-        map = new Cube[width][length][height];
+        this.map = new Cube[width][length][height];
+        this.length = length;
+        this.width = width;
+        this.height = height;
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
@@ -36,12 +43,14 @@ public class Map {
     }
 
     public int getWidth() {
-        return map.length;
+        return this.width;
     }
 
     public int getLength() {
-        return map[0].length;
+        return this.length;
     }
 
-
+    public int getHeight() {
+        return this.height;
+    }
 }
