@@ -9,6 +9,10 @@ public class Map {
     private final int width;
     private final int height;
 
+    private int selectedX;
+    private int selectedY;
+    private int selectedZ;
+
     public Map(int width, int length, int height) {
         this.map = new Cube[width][length][height];
         this.length = length;
@@ -48,5 +52,27 @@ public class Map {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public void setSelectedBlock(int x, int y, int z) {
+        this.map[this.selectedX][this.selectedY][this.selectedZ].setSelected(false);
+
+        this.selectedX = x;
+        this.selectedY = y;
+        this.selectedZ = z;
+
+        this.map[x][y][z].setSelected(true);
+    }
+
+    public int getSelectedX() {
+        return this.selectedX;
+    }
+
+    public int getSelectedY() {
+        return this.selectedY;
+    }
+
+    public int getSelectedZ() {
+        return this.selectedZ;
     }
 }

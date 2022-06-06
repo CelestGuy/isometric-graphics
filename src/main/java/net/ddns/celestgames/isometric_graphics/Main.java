@@ -18,8 +18,10 @@ public class Main extends Application {
         controller = new MainController();
         fxmlLoader.setController(controller);
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        controller.setScene(scene);
         stage.setTitle("Welcome to the Isometric World !");
         stage.setMaximized(true);
+        stage.requestFocus();
         stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("cubes/x128/stone.png"))));
         stage.setScene(scene);
         stage.show();

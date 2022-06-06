@@ -3,10 +3,10 @@ package net.ddns.celestgames.isometric_graphics;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import net.ddns.celestgames.isometric_graphics.game.Cube;
 import net.ddns.celestgames.isometric_graphics.game.Map;
@@ -16,14 +16,17 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML Pane pane;
+
+    private Scene scene;
     private double mapScale = 2;
     private int cubeSize = (int) (32 * mapScale);
 
-    private final Map map = new Map(10, 10, 1);
+    private final Map map = new Map(10, 10, 10);
 
     private int cameraX, cameraY, lastMousePosX, lastMousePosY;
 
-    private Image selected = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected.png")));
+    private Image selected1 = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected1.png")));
+    private Image selected2 = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected2.png")));
     private Image stone = new Image(String.valueOf(this.getClass().getResource("cubes/x32/stone.png")));
 
     @Override
@@ -33,9 +36,18 @@ public class MainController implements Initializable {
         lastMousePosX = 0;
         lastMousePosY = 0;
 
+        Cube air = new Cube("air", true);
+
         pane.setOnMouseMoved(this::onMouseMoved);
         pane.setOnMouseDragged(this::onMouseDragged);
         pane.setOnScroll(this::onScroll);
+
+        map.setCube(9, 9, 9, air);
+        map.setCube(9, 9, 8, air);
+        map.setCube(2, 2, 9, air);
+        map.setCube(8, 9, 9, air);
+        map.setCube(9, 8, 9, air);
+        map.setCube(8, 8, 9, air);
 
         graphicThread.start();
     }
@@ -73,6 +85,10 @@ public class MainController implements Initializable {
         }
     }
 
+    private void onKeyPressed(KeyEvent event) {
+        System.out.println("d");
+    }
+
     private void onMouseMoved(MouseEvent event) {
         lastMousePosX = (int) event.getX();
         lastMousePosY = (int) event.getY();
@@ -105,4 +121,10 @@ public class MainController implements Initializable {
             });
         }
     });
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
+    }
 }
