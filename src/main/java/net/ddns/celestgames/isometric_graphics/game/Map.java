@@ -18,11 +18,11 @@ public class Map {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
                 for (int k = 0; k < height; k++) {
-                    String id = "air";
+                    String id = "stone";
 
-                    if (k == 0) {
+                    /*if (k == 0) {
                         id = "stone";
-                    }
+                    }*/
 
                     map[i][j][k] = new Cube(id);
                 }

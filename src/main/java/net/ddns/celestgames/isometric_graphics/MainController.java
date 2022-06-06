@@ -14,18 +14,21 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML Pane pane;
-    final double mapScale = 1.5;
-    final int cubeSize = (int) (32 * mapScale);
+    private final double mapScale = 2;
+    private final int cubeSize = (int) (32 * mapScale);
 
-    private final Map map = new Map(10, 10, 3);
+    private final Map map = new Map(10, 10, 10);
 
     private int cameraX;
     private int cameraY;
 
+    private Image air = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected.png")));
+    private Image stone = new Image(String.valueOf(this.getClass().getResource("cubes/x32/stone.png")));
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cameraX = 0;
-        cameraY = 0;
+        cameraX = 900;
+        cameraY = 500;
 
         printMap();
     }
@@ -37,9 +40,23 @@ public class MainController implements Initializable {
 
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapLength; j++) {
-                /*for (int k = 0; k < mapHeight; k++) {
+                for (int k = 0; k < mapHeight; k++) {
+                    Cube cube = map.getCube(i, j, k);
 
-                }*/
+                    ImageView imageView = new ImageView(air);
+
+                    if (cube.getID().equals("stone")) {
+                        imageView = new ImageView(stone);
+                    }
+
+                    imageView.setX((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
+                    imageView.setY((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
+
+                    imageView.setFitWidth(cubeSize);
+                    imageView.setFitHeight(cubeSize);
+
+                    pane.getChildren().add(imageView);
+                }
             }
         }
     }
