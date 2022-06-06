@@ -31,8 +31,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cameraX = 900;
-        cameraY = 500;
+        cameraX = 600;
+        cameraY = 350;
         lastMousePosX = 0;
         lastMousePosY = 0;
 
@@ -41,13 +41,6 @@ public class MainController implements Initializable {
         pane.setOnMouseMoved(this::onMouseMoved);
         pane.setOnMouseDragged(this::onMouseDragged);
         pane.setOnScroll(this::onScroll);
-
-        map.setCube(9, 9, 9, air);
-        map.setCube(9, 9, 8, air);
-        map.setCube(2, 2, 9, air);
-        map.setCube(8, 9, 9, air);
-        map.setCube(9, 8, 9, air);
-        map.setCube(8, 8, 9, air);
 
         graphicThread.start();
     }
@@ -61,7 +54,7 @@ public class MainController implements Initializable {
 
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapLength; j++) {
-                for (int k = 0; k < mapHeight; k++) {
+                for (int k = mapHeight - 1; k >= 0; k--) {
                     Cube cube = map.getCube(i, j, k);
                     if (!cube.isTransparent()) {
                         ImageView imageView = new ImageView(stone);
@@ -73,6 +66,7 @@ public class MainController implements Initializable {
                         imageView.setFitHeight(cubeSize);
 
                         pane.getChildren().add(imageView);
+                        k = -1;
                     }
                 }
             }
@@ -108,11 +102,33 @@ public class MainController implements Initializable {
     }
 
     Thread graphicThread = new Thread(() -> {
+        int i = map.getWidth() - 1;
+        int j = map.getLength() - 1;
+        int k = map.getHeight() - 1;
+
+        int dir = -1;
+
         while (true) {
             try {
-                Thread.sleep(16);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+
+            map.setCube(i, j, k, new Cube("air", true));
+
+            j+=dir;
+            if (j < 0 || j >= map.getLength()) {
+                dir *= -1;
+                j+=dir;
+                i--;
+                if (i < 0) {
+                    i = map.getWidth() - 1;
+                    k--;
+                    if (k < 0) {
+                        k = map.getHeight() - 1;
+                    }
+                }
             }
 
             Platform.runLater(() -> {
