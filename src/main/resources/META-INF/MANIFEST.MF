@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Main-Class: net.ddns.celestgames.isometric_graphics.Main
+Class-Path: javafx-controls-17.0.1-win.jar jackson-core-2.12.1.jar fxgl-
+ entity-17.jar javafx-fxml-17.0.1-win.jar audio-4.0.9.jar javafx-media-1
+ 7.0.1.jar javafx-base-17.0.1-win.jar javafx-controls-17.0.1.jar javafx-
+ graphics-17.0.1.jar fxgl-core-17.jar kotlin-stdlib-1.5.32-modular.jar f
+ xgl-gameplay-17.jar kotlin-stdlib-common-1.5.32.jar javafx-base-17.0.1.
+ jar lifecycle-4.0.9.jar javafx-media-17.0.1-win.jar fxgl-io-17.jar jack
+ son-annotations-2.12.1.jar storage-4.0.9.jar javafx-graphics-17.0.1-win
+ .jar javafx-fxml-17.0.1.jar fxgl-17.jar annotations-13.0.jar fxgl-scene
+ -17.jar util-4.0.9.jar jackson-databind-2.12.1.jar
+

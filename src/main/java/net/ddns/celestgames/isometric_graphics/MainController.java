@@ -112,8 +112,6 @@ public class MainController implements Initializable {
         int k = selectedCube.getZ();
 
         if (!client.getSelectedCube().equals(noSelection) && (k == map.getHeight() - 1 || map.getCube(i, j, k + 1).isTransparent())) {
-
-
             ImageView imageView = new ImageView(selected2);
 
             imageView.setX((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
