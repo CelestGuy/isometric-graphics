@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 import net.ddns.celestgames.isometric_graphics.game.*;
 
 import java.net.URL;
@@ -48,8 +49,6 @@ public class MainController implements Initializable {
         cameraY = 350;
         lastMousePosX = 0;
         lastMousePosY = 0;
-
-        Cube air = new Cube("air", true);
 
         pane.setOnMouseMoved(this::onMouseMoved);
         pane.setOnMouseDragged(this::onMouseDragged);
