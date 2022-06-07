@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import net.ddns.celestgames.isometric_graphics.game.Client;
 
 import java.io.IOException;
 
@@ -14,8 +15,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Client client = new Client("theo");
+
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"));
-        controller = new MainController();
+        controller = new MainController(client);
         fxmlLoader.setController(controller);
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         controller.setScene(scene);
