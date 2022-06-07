@@ -32,7 +32,8 @@ public class MainController implements Initializable {
     private int cameraX, cameraY, lastMousePosX, lastMousePosY;
 
     private final Image selected1 = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected1.png")));
-    private final Image selected2 = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected2.png")));
+    private final Image selected_top = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected_top.png")));
+    private final Image mapBase = new Image(String.valueOf(this.getClass().getResource("cubes/x32/map_base.png")));
     private final Image stone = new Image(String.valueOf(this.getClass().getResource("cubes/x32/stone.png")));
 
     public MainController(Client client) {
@@ -75,7 +76,16 @@ public class MainController implements Initializable {
                     int x = (int) ((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
                     int y = (int) ((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
 
-                    if (!cube.isTransparent()) {
+                    if (cube.isTransparent() && k == 0) {
+                        ImageView imageView = new ImageView(mapBase);
+                        imageView.setX(x);
+                        imageView.setY(y);
+
+                        imageView.setFitWidth(cubeSize);
+                        imageView.setFitHeight(cubeSize);
+
+                        pane.getChildren().add(imageView);
+                    } else if (!cube.isTransparent()) {
                         ImageView imageView = new ImageView(stone);
 
                         imageView.setX(x);
@@ -112,7 +122,7 @@ public class MainController implements Initializable {
         int k = selectedCube.getZ();
 
         if (!client.getSelectedCube().equals(noSelection) && (k == map.getHeight() - 1 || map.getCube(i, j, k + 1).isTransparent())) {
-            ImageView imageView = new ImageView(selected2);
+            ImageView imageView = new ImageView(selected_top);
 
             imageView.setX((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
             imageView.setY((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
