@@ -36,6 +36,7 @@ public class MainController implements Initializable {
     private final Image selected_top = new Image(String.valueOf(this.getClass().getResource("cubes/x32/selected_top.png")));
     private final Image mapBase = new Image(String.valueOf(this.getClass().getResource("cubes/x32/map_base.png")));
     private final Image stone = new Image(String.valueOf(this.getClass().getResource("cubes/x32/stone.png")));
+    private final Image shadow = new Image(String.valueOf(this.getClass().getResource("cubes/x32/shadow.png")));
 
     public MainController(Client client) {
         this.client = client;
@@ -57,17 +58,7 @@ public class MainController implements Initializable {
         graphicThread.start();
     }
 
-    private void printMap() {
-        pane.getChildren().clear();
-        blocksPositions = new ArrayList<>();
-        blocksIndexes = new ArrayList<>();
-
-        int mapHeight = map.getHeight();
-        int mapLength = map.getLength();
-        int mapWidth = map.getWidth();
-
-        Point3D selectedCube = client.getSelectedCube();
-
+    private void printMapSE(int mapWidth, int mapLength, int mapHeight) {
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapLength; j++) {
                 for (int k = 0; k < mapHeight; k++) {
@@ -110,12 +101,98 @@ public class MainController implements Initializable {
 
                             pane.getChildren().add(selectionView);
                         }
-                        //k = -1;
+                    } else {
+                        ImageView imageView = new ImageView(shadow);
+
+                        imageView.setX(x);
+                        imageView.setY(y);
+
+                        imageView.setFitWidth(cubeSize);
+                        imageView.setFitHeight(cubeSize);
+
+                        blocksPositions.add(new Point2D(x, y));
+                        blocksIndexes.add(new Point3D(i, j, k));
+
+                        pane.getChildren().add(imageView);
                     }
                 }
             }
         }
+    }
 
+    private void printMapSO(int mapWidth, int mapLength, int mapHeight) {
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapLength; j++) {
+                for (int k = 0; k < mapHeight; k++) {
+                    Cube cube = map.getCube(j, mapWidth - 1 - i, k);
+                    int x = (int) ((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
+                    int y = (int) ((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
+
+                    if (cube.isTransparent() && k == 0) {
+                        ImageView imageView = new ImageView(mapBase);
+                        imageView.setX(x);
+                        imageView.setY(y);
+
+                        imageView.setFitWidth(cubeSize);
+                        imageView.setFitHeight(cubeSize);
+
+                        pane.getChildren().add(imageView);
+                    } else if (!cube.isTransparent()) {
+                        ImageView imageView = new ImageView(stone);
+
+                        imageView.setX(x);
+                        imageView.setY(y);
+
+                        imageView.setFitWidth(cubeSize);
+                        imageView.setFitHeight(cubeSize);
+
+                        imageView.setOnMouseEntered(this::onMouseHover);
+                        blocksPositions.add(new Point2D(x, y));
+                        blocksIndexes.add(new Point3D(j, mapWidth - i - 1, k));
+
+                        pane.getChildren().add(imageView);
+
+                        if (client.getSelectedCube().equals(new Point3D(i, mapWidth - i - 1, k))) {
+                            ImageView selectionView = new ImageView(selected1);
+
+                            selectionView.setX((j * cubeSize) - (j * cubeSize / 2.0) - (i * cubeSize / 2.0) + cameraX);
+                            selectionView.setY((i * cubeSize) - (k * cubeSize / 2.0) - (i * cubeSize / 4.0 * 3) + (j * cubeSize / 4.0) + cameraY);
+
+                            selectionView.setFitWidth(cubeSize);
+                            selectionView.setFitHeight(cubeSize);
+
+                            pane.getChildren().add(selectionView);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void printMap() {
+        pane.getChildren().clear();
+
+        blocksPositions = new ArrayList<>();
+        blocksIndexes = new ArrayList<>();
+
+        int mapHeight = map.getHeight();
+        int mapLength = map.getLength();
+        int mapWidth = map.getWidth();
+
+        switch (client.getView()) {
+            case 1:
+                printMapSO(mapWidth, mapLength, mapHeight);
+                break;
+            /*case 2:
+                break;
+            case 3:
+                break;*/
+            default:
+                printMapSE(mapWidth, mapLength, mapHeight);
+                break;
+        }
+
+        Point3D selectedCube = client.getSelectedCube();
         int i = selectedCube.getX();
         int j = selectedCube.getY();
         int k = selectedCube.getZ();
@@ -145,8 +222,8 @@ public class MainController implements Initializable {
             Point2D point2D = blocksPositions.get(index);
 
             if (x >= point2D.getX() && x <= point2D.getX() + cubeSize && y >= point2D.getY() && y <= point2D.getY() + cubeSize) {
-                i = (int) blocksIndexes.get(index).getX();
-                j = (int) blocksIndexes.get(index).getY();
+                i = blocksIndexes.get(index).getX();
+                j = blocksIndexes.get(index).getY();
                 k = blocksIndexes.get(index).getZ();
 
                 client.setSelectedCube(new Point3D(i, j, k));
@@ -189,6 +266,15 @@ public class MainController implements Initializable {
         }
     }
 
+    public void onKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.Q) {
+            client.setView(1);
+        }
+        if (event.getCode() == KeyCode.D) {
+            client.setView(0);
+        }
+    }
+
     Thread graphicThread = new Thread(() -> {
         while (true) {
             try {
@@ -208,5 +294,6 @@ public class MainController implements Initializable {
         this.scene = scene;
 
         scene.addEventFilter(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
     }
 }

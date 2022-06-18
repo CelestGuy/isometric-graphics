@@ -6,6 +6,7 @@ import net.ddns.celestgames.isometric_graphics.Main;
 public class Client {
     private final String name;
     private final Image skin;
+    private int view;
 
     private Point3D selectedCube;
 
@@ -35,5 +36,13 @@ public class Client {
 
     public void resetSelectedCube() {
         this.selectedCube = new Point3D(-1, -1, -1);
+    }
+
+    public int getView() {
+        return view;
+    }
+
+    public void setView(int view) {
+        this.view = view;
     }
 }
