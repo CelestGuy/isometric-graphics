@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: net.ddns.celestgames.isometric_graphics.Main
+Main-Class: fr.celestgames.isometric_graphics.Main
 Class-Path: javafx-controls-17.0.1-win.jar jackson-core-2.12.1.jar fxgl-
  entity-17.jar javafx-fxml-17.0.1-win.jar audio-4.0.9.jar javafx-media-1
  7.0.1.jar javafx-base-17.0.1-win.jar javafx-controls-17.0.1.jar javafx-
