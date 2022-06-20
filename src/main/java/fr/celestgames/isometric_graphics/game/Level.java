@@ -3,16 +3,25 @@ package fr.celestgames.isometric_graphics.game;
 public class Level {
     Cube[][][] cubes;
 
-    public Level(int width, int height, int depth) {
-        cubes = new Cube[width][height][depth];
+    private final int width, height, depth;
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+    public Level(int width, int height, int depth) {
+        cubes = new Cube[height][width][depth];
+
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 for (int z = 0; z < depth; z++) {
-                    if (x > (width - z) / 2 || y > (height - z) / 2) {
-                        cubes[x][y][z] = new Cube(CubeType.BASE);
+                    int nWidth = width - z;
+                    int nHeight = height - z;
+
+                    if (x < (nWidth - y) || y < (nHeight - x)) {
+                        cubes[y][x][z] = new Cube(CubeType.INACTIVE);
                     } else {
-                        cubes[x][y][z] = new Cube(CubeType.VOID);
+                        cubes[y][x][z] = new Cube(CubeType.VOID);
                     }
                 }
             }
@@ -21,14 +30,39 @@ public class Level {
     }
 
     public Cube getCube(int x, int y, int z) {
-        return cubes[x][y][z];
+        return cubes[y][x][z];
     }
 
     public void setCube(int x, int y, int z, Cube cube) {
-        cubes[x][y][z] = cube;
+        cubes[y][x][z] = cube;
     }
 
     public Cube[][][] getCubes() {
         return cubes;
+    }
+
+    public boolean hasInactiveCube() {
+        for (int y = 0; y < cubes.length; y++) {
+            for (int x = 0; x < cubes[y].length; x++) {
+                for (int z = 0; z < cubes[y][x].length; z++) {
+                    if (cubes[y][x][z].getType() == CubeType.INACTIVE) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getDepth() {
+        return depth;
     }
 }

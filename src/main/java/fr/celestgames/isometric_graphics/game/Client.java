@@ -7,10 +7,15 @@ public class Client {
     private final String name;
     private int view;
 
+    public int x, y, z;
+
     private static final Client instance = new Client("Theo");
 
     private Client(String name) {
         this.name = name;
+        this.x = 5;
+        this.y = 5;
+        this.z = 1;
     }
 
     public String getName() {

@@ -10,7 +10,7 @@ public class SpiteSheet extends ImageUtils {
         BufferedImage spriteSheet = readImage(path);
         BufferedImage[] sprites;
 
-        if (spriteSheet.getWidth() % 16 == 0 && spriteSheet.getHeight() % 16 == 0) {
+        if (spriteSheet.getWidth() % tileSize == 0 && spriteSheet.getHeight() % tileSize == 0) {
             sprites = new BufferedImage[1];
             BufferedImage tempImage = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D g2 = tempImage.createGraphics();

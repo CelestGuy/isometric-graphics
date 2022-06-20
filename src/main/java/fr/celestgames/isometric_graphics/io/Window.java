@@ -1,6 +1,7 @@
 package fr.celestgames.isometric_graphics.io;
 
 import fr.celestgames.isometric_graphics.game.Client;
+import fr.celestgames.isometric_graphics.ui.LevelScreen;
 import fr.celestgames.isometric_graphics.ui.Screen;
 
 import javax.swing.*;
@@ -9,22 +10,21 @@ import java.awt.*;
 import static fr.celestgames.isometric_graphics.utils.ImageUtils.readImage;
 
 public class Window extends JPanel implements Runnable {
-    private static Window instance = null;
-    public static final int tileSize = 16;
+    public static final int tileSize = 32;
     public final Thread renderThread = new Thread(this, "RENDER_THREAD");
     public final Keyboard keyboard = new Keyboard();
-    private final Client client;
+    public final Client client;
     private final int width;
     private final int height;
     private final JFrame window = new JFrame();
     public int scale;
 
-    private Screen screen;
+    public Screen screen;
 
     public Window(Client client) {
         this.client = client;
 
-        window.setTitle("A Mazing temple - The Buggiest Game Ever Created");
+        window.setTitle("QBert Like - A little game by CelestGames");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(true);
 
@@ -46,10 +46,11 @@ public class Window extends JPanel implements Runnable {
     @Override
     public void run() {
         window.setVisible(true);
+        this.screen = new LevelScreen(this);
 
         while (renderThread.isAlive()) {
             try {
-                Thread.sleep(16, 666666);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -61,18 +62,14 @@ public class Window extends JPanel implements Runnable {
         }
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
+        graphics2D.fillRect(0, 0, window.getWidth(), window.getHeight());
 
-        screen.update();
+        if (screen != null) {
+            screen.render(graphics2D);
+        }
 
         graphics2D.dispose();
-    }
-
-    public static Window getInstance() {
-        if (instance == null) {
-            instance = new Window(Client.getInstance());
-        }
-        return instance;
     }
 }

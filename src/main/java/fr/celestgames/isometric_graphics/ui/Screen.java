@@ -6,8 +6,11 @@ import java.awt.*;
 
 public abstract class Screen {
     protected Window window;
-    public Screen() {
-        this.window = Window.getInstance();
+    protected int cameraX, cameraY;
+    public Screen(Window window) {
+        this.window = window;
+        this.cameraX = window.getWidth() / 2;
+        this.cameraY = window.getHeight() / 2;
     }
 
     public abstract void update();
